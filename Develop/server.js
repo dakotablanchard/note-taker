@@ -10,5 +10,10 @@ const app = express();
 // Specify on which port the Express.js server will run
 const PORT = processs.env.PORT || 3001;
 
+// ----- MIDDLEWARE -----
 // Static middleware pointing to the public folder
 app.use(express.static('public'));
+// Middleware to parse JSON-formatted request bodies
+app.use(express.json());
+// Middleware to parse URL-encoded request bodies
+app.use(express.urlencoded({ extended: true }));
