@@ -12,21 +12,21 @@ notes.get('/notes', (req, res) => {
 });
 
 //GET Route for specific note
-// notes.get('/notes/:id', (req, res) => {
-//     const noteId = req.params.note_id;
-//     readFromFile('./db/db.json')
-//       .then((data) => JSON.parse(data))
-//       .then((json) => {
-//         const result = json.filter((note) => note.id === noteId);
-//         return result.length > 0
-//           ? res.json(result)
-//           : res.json('No note with that ID');
-//       });
-//   });
+notes.get('/notes/:id', (req, res) => {
+    const noteId = req.params.id;
+    readFromFile('./db/db.json')
+      .then((data) => JSON.parse(data))
+      .then((json) => {
+        const result = json.filter((note) => note.id === noteId);
+        return result.length > 0
+          ? res.json(result)
+          : res.json('No note with that ID');
+      });
+  });
 
 //  POST Route for note
-notes.post('/', (req, res) => {
-    const { title, text } = req.body;
+notes.post('/notes', (req, res) => {
+    const { title, text, } = req.body;
   
     if (req.body) {
       const newNote = {
@@ -35,11 +35,24 @@ notes.post('/', (req, res) => {
         id: uuidv4(),
       };
   
-      readAndAppend(newNote, '../db/db.json');
+      readAndAppend(newNote, './db/db.json');
       res.json(`Note added successfully`);
     } else {
       res.error('Error in adding note');
     }
+  });
+
+ notes.delete('/notes/:id', (req, res) => {
+    const noteId = req.params.id;
+    readFromFile('./db/db.json')
+      .then((data) => JSON.parse(data))
+      .then((json) => {
+        const result = json.filter((note) => note.id !== noteId);
+  
+        writeToFile('./db/db.json', result);
+  
+        res.json(`Item ${noteId} has been deleted`);
+      });
   });
 
 module.exports = notes;
