@@ -1,5 +1,10 @@
+// Setting up Express.js router
 const notes = require('express').Router();
+
+// Import uuid generator
 const { v4: uuidv4 } = require('uuid');
+
+// Import helper functions 
 const {
   readFromFile,
   readAndAppend,
@@ -11,7 +16,7 @@ notes.get('/notes', (req, res) => {
   readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)));
 });
 
-//GET Route for specific note
+// GET Route for specific note
 notes.get('/notes/:id', (req, res) => {
     const noteId = req.params.id;
     readFromFile('./db/db.json')
@@ -24,7 +29,7 @@ notes.get('/notes/:id', (req, res) => {
       });
   });
 
-//  POST Route for note
+// POST Route for note
 notes.post('/notes', (req, res) => {
     const { title, text, } = req.body;
   
@@ -42,6 +47,7 @@ notes.post('/notes', (req, res) => {
     }
   });
 
+// DELETE Route for note
  notes.delete('/notes/:id', (req, res) => {
     const noteId = req.params.id;
     readFromFile('./db/db.json')
@@ -55,4 +61,6 @@ notes.post('/notes', (req, res) => {
       });
   });
 
+
+// Export module notes
 module.exports = notes;
